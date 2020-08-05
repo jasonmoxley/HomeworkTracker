@@ -8,14 +8,15 @@ class LogInForm extends React.Component {
         if (touched && error) {
             return (
                 <div className="ui pointing red basic label">
-                        {error}
+                    {error}
                 </div>
             );
         }
     }
 
     renderInput = ({ input, label, type, meta }) => {
-        const className = `field ${meta.error && meta.touched ? 'error': ''}`;
+        // const className = `field ${meta.error && meta.touched ? 'error': ''}`;
+        const className = 'field';
         return (
             <div className={className}>
                 <label>{label}</label>

@@ -7,20 +7,26 @@ import { logOut } from '../actions';
 class Header extends React.Component{
 
     renderHeader() {
-        if (this.props.isSignedIn) {
+
+        const { isSignedIn } = this.props;
+
+        if (isSignedIn) {
             return (
-                <>
-                    <div className="header item">Homework Tracker</div>
+                <div className="ui container">
+                    <Link to="/Dashboard" className="header item">Homework Tracker</Link>
                     <div className="right menu">
+                        <div className="item">
+                            <Link to="/CreateTask" className="ui inverted button">Create Task</Link>
+                        </div>
                         <div className="item">
                             <button onClick={()=> this.props.logOut()}className="ui inverted button">Log Out</button>
                         </div>
                     </div>
-                </>
+                </div>
             );
         } else {
             return (
-                <>
+                <div className="ui container">
                     <Link to="/" className="header item">Homework Tracker</Link>
                     <div className="right menu">
                         <div className="item">
@@ -30,14 +36,14 @@ class Header extends React.Component{
                             <Link to="/LogIn" className="ui inverted button">Log In</Link>
                         </div>
                     </div>
-                </>
+                </div>
             );
         }
     }
 
     render() {
         return (
-            <div className="ui inverted menu">
+            <div className="ui inverted blue borderless menu">
                 {this.renderHeader()}
             </div>
         );
