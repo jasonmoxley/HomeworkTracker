@@ -1,47 +1,46 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchTasks } from '../actions';
-import _ from 'lodash';
-import moment from 'moment';
+import { firestoreConnect } from 'react-redux-firebase';
+import { compose } from 'redux';
+import { Redirect } from 'react-router-dom';
+import TaskList from './TaskList';
 
 
 class Dashboard extends React.Component {
 
-    renderTasks() {
-        const { tasks } = this.props;
-        const newTasks = Object.keys(tasks).map(item => {
-            return { [item]: tasks[item] };
-        });
-        return newTasks.map(task => {
-            const id = _.keysIn(task)[0];
-            return (
-                <>
-                    <h3 className="ui header">{moment(task[id].date).format('LL')}</h3>
-                    <div className="item" style={{ marginLeft: "30px" }}>
-                        <div className="content">
-                            <div className="header">{task[id].title}</div>
-                            <div className="meta">{`Due ${moment(task[id].date).format('lll')}`}</div>
-                            <div className="description">{task[id].description}</div>
-                        </div>
-                    </div>
-                </>
-            );
-        })
+    componentDidMount() {
+        
     }
 
     render() {
-        return (
-            <div className="ui divided items">
-                {this.renderTasks()}
-            </div>
-        );
+        const { tasks, auth } = this.props;
+        if (!auth.uid) {
+            return <Redirect to="/LogIn" />;
+        }
+        if (!tasks) {
+            return (
+                <div className="ui segment" style={{ height: "150px", marginTop: "50px" }}>
+                    <div className="ui active inverted dimmer">
+                        <div className="ui large text loader">Loading</div>
+                    </div>
+                </div>
+            );
+        } else {
+            return <TaskList tasks={tasks} />
+        }
     };
 }
 
 const mapStateToProps = (state) => {
     return {
-        tasks: state.hw.tasks
+        tasks: state.firestore.ordered.tasks,
+        auth: state.firebase.auth
     }
 }
 
-export default connect(mapStateToProps)(Dashboard);
+export default compose(
+    connect(mapStateToProps),
+    firestoreConnect([
+        { collection: 'tasks' }
+    ])
+)(Dashboard);

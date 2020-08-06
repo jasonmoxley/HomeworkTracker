@@ -29,8 +29,7 @@ var firebaseConfig = {
 };
 
 const rrfConfig = {
-    userProfile: 'users',
-    userFirestoreForProfile: true
+    attachAuthIsReady: true
 }
 
 // Initialize Firebase

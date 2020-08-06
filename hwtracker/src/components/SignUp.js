@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { signUp } from '../actions';
 import SignUpForm from './SignUpForm';
+import { Redirect } from 'react-router-dom';
 
 class SignUp extends React.Component {
     handleFormSubmit = (formValues) => {
@@ -9,6 +10,10 @@ class SignUp extends React.Component {
     }
 
     render() {
+        const { auth } = this.props;
+        if (auth.uid) {
+            return <Redirect to="/Dashboard" />;
+        }
         return (
             <div>
                 <h3>Sign Up</h3>
@@ -18,4 +23,8 @@ class SignUp extends React.Component {
     }
 }
 
-export default connect(null, { signUp })(SignUp);
+const mapStateToProps = state => {
+    return { auth: state.firebase.auth }
+}
+
+export default connect(mapStateToProps, { signUp })(SignUp);

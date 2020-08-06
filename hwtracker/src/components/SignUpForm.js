@@ -1,6 +1,7 @@
 import React from 'react';
 import {Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 class SignUpForm extends React.Component {
 
@@ -29,12 +30,15 @@ class SignUpForm extends React.Component {
     }
 
     render() {
+        console.log(this.props.authError);
+
         return (
-            <form onSubmit={this.props.handleSubmit} className="ui form">
+            <form onSubmit={this.props.handleSubmit} className="ui form error">
                 <Field name="email" component={this.renderInput} type="text" label="Email" />
                 <Field name="password" component={this.renderInput} type="text" label="Password" />
                 <Field name="first" component={this.renderInput} type="text" label="First" />
                 <Field name="last" component={this.renderInput} type="text" label="Last" />
+                <div className="ui error message">{this.props.authError ? this.props.authError : ''}</div>
                 <Link to="/" className="ui button">Cancel</Link>
                 <button type="submit" className="ui button">Submit</button>
             </form>
@@ -58,6 +62,12 @@ const validate = (formValues) => {
     }
     return errors;
 }
+
+const mapStateToProps = (state) => {
+    return { authError: state.auth.authError }
+}
+
+SignUpForm = connect(mapStateToProps)(SignUpForm);
 
 export default reduxForm({
     form: 'signUpForm',

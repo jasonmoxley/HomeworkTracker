@@ -8,8 +8,8 @@ class Header extends React.Component{
 
     renderHeader() {
 
-        const { isSignedIn } = this.props;
-
+        const { auth } = this.props;
+        const isSignedIn = auth.uid ? true : false;
         if (isSignedIn) {
             return (
                 <div className="ui container">
@@ -43,7 +43,7 @@ class Header extends React.Component{
 
     render() {
         return (
-            <div className="ui inverted blue borderless menu">
+            <div className="ui inverted borderless menu">
                 {this.renderHeader()}
             </div>
         );
@@ -51,7 +51,7 @@ class Header extends React.Component{
 }
 
 const mapStateToProps = state => {
-    return {isSignedIn: state.auth.isSignedIn};
+    return { auth: state.firebase.auth };
 }
 
 export default connect(mapStateToProps, { logOut })(Header);

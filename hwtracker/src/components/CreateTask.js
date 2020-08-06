@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createTask } from '../actions';
 import CreateTaskForm from './CreateTaskForm';
+import { Redirect } from 'react-router-dom';
 
 class CreateTask extends React.Component {
     handleFormSubmit = (formValues) => {
@@ -9,6 +10,10 @@ class CreateTask extends React.Component {
     }
 
     render() {
+        const { auth } = this.props;
+        if (!auth.uid) {
+            return <Redirect to="/LogIn" />;
+        }
         return (
             <div>
                 <h3>CreateTask</h3>
@@ -18,4 +23,8 @@ class CreateTask extends React.Component {
     }
 }
 
-export default connect(null, { createTask })(CreateTask);
+const mapStateToProps = (state) => {
+    return { auth: state.firebase.auth }; 
+}
+
+export default connect(mapStateToProps, { createTask })(CreateTask);
