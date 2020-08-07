@@ -7,7 +7,6 @@ import { logOut } from '../actions';
 class Header extends React.Component{
 
     renderHeader() {
-
         const { auth } = this.props;
         const isSignedIn = auth.uid ? true : false;
         if (isSignedIn) {

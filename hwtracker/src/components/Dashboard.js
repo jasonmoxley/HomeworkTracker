@@ -1,19 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { firestoreConnect } from 'react-redux-firebase';
-import { compose } from 'redux';
 import { Redirect } from 'react-router-dom';
 import TaskList from './TaskList';
+import { fetchTasks } from '../actions';
 
 
 class Dashboard extends React.Component {
 
     componentDidMount() {
-        
+        this.props.fetchTasks();
     }
 
     render() {
         const { tasks, auth } = this.props;
+        console.log(tasks);
         if (!auth.uid) {
             return <Redirect to="/LogIn" />;
         }
@@ -32,15 +32,11 @@ class Dashboard extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+    console.log(state);
     return {
-        tasks: state.firestore.ordered.tasks,
+        tasks: state.hw.tasks,
         auth: state.firebase.auth
     }
 }
 
-export default compose(
-    connect(mapStateToProps),
-    firestoreConnect([
-        { collection: 'tasks' }
-    ])
-)(Dashboard);
+export default connect(mapStateToProps, { fetchTasks })(Dashboard);

@@ -1,4 +1,4 @@
-import { LOG_IN_SUCCESS, LOG_IN_ERROR, SIGN_UP_SUCCESS, SIGN_UP_ERROR, LOG_OUT_SUCCESS, CREATE_TASK_SUCCESS, CREATE_TASK_ERROR } from './types';
+import { LOG_IN_SUCCESS, LOG_IN_ERROR, SIGN_UP_SUCCESS, SIGN_UP_ERROR, LOG_OUT_SUCCESS, CREATE_TASK_SUCCESS, CREATE_TASK_ERROR, FETCH_TASKS_SUCCESS, FETCH_TASKS_ERROR } from './types';
 import history from '../history';
 
 export const logIn = (formValues) => {
@@ -55,11 +55,11 @@ export const logOut = () => {
 export const createTask = (formValues) => {
     return (dispatch, getState, getFirebase) => {
         // const firebase = getFirebase();
+        const userId = getState().firebase.auth.uid;
         const firestore = getFirebase().firestore();
         firestore.collection('tasks').add({
             ...formValues,
-            authorFirstName: 'Jason',
-            authorLastName: 'Moxley'
+            uid: userId
         }).then(() => {
             dispatch({ type: CREATE_TASK_SUCCESS, payload: formValues });
             history.push('/Dashboard');
@@ -67,4 +67,22 @@ export const createTask = (formValues) => {
             dispatch({ type: CREATE_TASK_ERROR, payload: err})
         })
     };
+};
+
+export const fetchTasks = () => {
+    return (dispatch, getState, getFirebase) => {
+        const userId = getState().firebase.auth.uid;
+        const results = [];
+        console.log(userId);
+        const firestore = getFirebase().firestore();
+        firestore.collection('tasks').where('uid', '==', userId ).orderBy('date').get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                results.push(doc.data());
+            });
+            console.log(results);
+            dispatch({ type: FETCH_TASKS_SUCCESS, payload: results });
+        }).catch((err) => {
+            dispatch({ type: FETCH_TASKS_ERROR, payload: err });
+        })
+    }
 };
