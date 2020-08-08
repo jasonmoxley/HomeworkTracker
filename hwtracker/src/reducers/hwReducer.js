@@ -1,4 +1,4 @@
-import { CREATE_TASK_SUCCESS, CREATE_TASK_ERROR, FETCH_TASK_SUCCESS, FETCH_TASK_ERROR, FETCH_TASKS_SUCCESS, FETCH_TASKS_ERROR } from '../actions/types';
+import { CREATE_TASK_SUCCESS, CREATE_TASK_ERROR, FETCH_TASKS_SUCCESS, FETCH_TASKS_ERROR } from '../actions/types';
 
 export default (state = {}, action) => {
     switch (action.type) {

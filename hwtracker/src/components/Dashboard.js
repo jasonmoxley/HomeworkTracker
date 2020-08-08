@@ -1,22 +1,34 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+// import { Redirect } from 'react-router-dom';
 import TaskList from './TaskList';
 import { fetchTasks } from '../actions';
+import history from '../history';
 
 
 class Dashboard extends React.Component {
 
     componentDidMount() {
-        this.props.fetchTasks();
+        const { auth } = this.props;
+        const uid = auth.uid
+        if (uid === undefined) {
+            console.log('dashboard redirect');
+            history.push('/');
+        } else {
+            console.log('trying to fetch tasks');
+            console.log(uid);
+            this.props.fetchTasks(uid);
+        }
+        
     }
 
     render() {
-        const { tasks, auth } = this.props;
+        const { tasks } = this.props;
+        // if (!auth.uid) {
+        //     console.log('dashboard redirect');
+        //     return <Redirect to="/" />;
+        // }
         console.log(tasks);
-        if (!auth.uid) {
-            return <Redirect to="/LogIn" />;
-        }
         if (!tasks) {
             return (
                 <div className="ui segment" style={{ height: "150px", marginTop: "50px" }}>

@@ -54,7 +54,6 @@ export const logOut = () => {
 
 export const createTask = (formValues) => {
     return (dispatch, getState, getFirebase) => {
-        // const firebase = getFirebase();
         const userId = getState().firebase.auth.uid;
         const firestore = getFirebase().firestore();
         firestore.collection('tasks').add({
@@ -69,20 +68,17 @@ export const createTask = (formValues) => {
     };
 };
 
-export const fetchTasks = () => {
-    return (dispatch, getState, getFirebase) => {
-        const userId = getState().firebase.auth.uid;
-        const results = [];
-        console.log(userId);
-        const firestore = getFirebase().firestore();
-        firestore.collection('tasks').where('uid', '==', userId ).orderBy('date').get().then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                results.push(doc.data());
-            });
-            console.log(results);
-            dispatch({ type: FETCH_TASKS_SUCCESS, payload: results });
-        }).catch((err) => {
-            dispatch({ type: FETCH_TASKS_ERROR, payload: err });
-        })
-    }
+export const fetchTasks = (userId) => (dispatch, getState, getFirebase) => {
+    const firestore = getFirebase().firestore();
+    const results = [];
+    console.log(userId);
+    firestore.collection('tasks').where('uid', '==', userId ).orderBy('date').get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            results.push({ ...doc.data(), id: doc.id });
+        });
+        console.log(results);
+        dispatch({ type: FETCH_TASKS_SUCCESS, payload: results });
+    }).catch((err) => {
+        dispatch({ type: FETCH_TASKS_ERROR, payload: err });
+    })
 };

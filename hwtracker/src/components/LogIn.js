@@ -13,6 +13,7 @@ class LogIn extends React.Component {
     render() {
         const { auth } = this.props;
         if (auth.uid) {
+            console.log('login redirect');
             return <Redirect to="/Dashboard" />;
         }
         return (

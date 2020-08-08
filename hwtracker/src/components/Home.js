@@ -6,6 +6,7 @@ class Home extends React.Component {
     render() {
         const { auth } = this.props;
         if (auth.uid) {
+            console.log('home redirect');
             return <Redirect to="/Dashboard" />;
         }
         return (
@@ -15,7 +16,6 @@ class Home extends React.Component {
 }
 
 const mapStateToProps = state => {
-    console.log(state);
     return { auth: state.firebase.auth }
 }
 
