@@ -11,13 +11,13 @@ class LogIn extends React.Component {
     }
 
     render() {
-        const { auth } = this.props;
-        if (auth.uid) {
+        const { uid } = this.props;
+        if (uid) {
             console.log('login redirect');
             return <Redirect to="/Dashboard" />;
         }
         return (
-            <div>
+            <div style={{ backgroundColor: "white", padding: "15px", marginTop: "100px", marginLeft: "100px", marginRight: "100px" }} >
                 <h3>Log In</h3>
                 <LogInForm onSubmit={(values) => this.handleFormSubmit(values)} />
             </div>
@@ -26,7 +26,7 @@ class LogIn extends React.Component {
 }
 
 const mapStateToProps = state => {
-    return { auth: state.firebase.auth }
+    return { uid: state.auth.uid }
 }
 
 export default connect(mapStateToProps, { logIn })(LogIn);

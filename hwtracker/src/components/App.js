@@ -10,6 +10,7 @@ import history from '../history';
 
 const App = () => {
     return (
+        <div style={{ backgroundColor: "#4B9CD3", width: "100%", height: "100vh", overflow: "auto" }}>
             <Router history={history}>
                     <Header />
                     <div className="ui container">
@@ -22,6 +23,7 @@ const App = () => {
                         </Switch>
                     </div>
             </Router>
+        </div>  
     );
 };
 

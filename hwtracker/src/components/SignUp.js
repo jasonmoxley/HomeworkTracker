@@ -10,8 +10,8 @@ class SignUp extends React.Component {
     }
 
     render() {
-        const { auth } = this.props;
-        if (auth.uid) {
+        const { uid } = this.props;
+        if (uid) {
             return <Redirect to="/Dashboard" />;
         }
         return (
@@ -24,7 +24,7 @@ class SignUp extends React.Component {
 }
 
 const mapStateToProps = state => {
-    return { auth: state.firebase.auth }
+    return { uid: state.auth.uid }
 }
 
 export default connect(mapStateToProps, { signUp })(SignUp);

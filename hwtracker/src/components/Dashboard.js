@@ -1,33 +1,59 @@
 import React from 'react';
 import { connect } from 'react-redux';
-// import { Redirect } from 'react-router-dom';
 import TaskList from './TaskList';
-import { fetchTasks } from '../actions';
+import { fetchTasks, deleteTask, completeTask } from '../actions';
 import history from '../history';
+import moment from 'moment';
 
 
 class Dashboard extends React.Component {
 
     componentDidMount() {
-        const { auth } = this.props;
-        const uid = auth.uid
-        if (uid === undefined) {
-            console.log('dashboard redirect');
+        const { uid } = this.props;
+        if (!uid) {
+            console.log('dashboard redirect to home');
             history.push('/');
         } else {
-            console.log('trying to fetch tasks');
-            console.log(uid);
             this.props.fetchTasks(uid);
         }
-        
+    }
+
+    onTaskDelete = (id) => {
+        console.log('deleting task');
+        const { uid } = this.props;
+        this.props.deleteTask(id, uid);
+        // this.props.fetchTasks(uid);
+    }
+
+    onTaskComplete = (id, isComplete) => {
+        console.log('completing task');
+        console.log(id);
+        const { uid } = this.props;
+        this.props.completeTask(id, uid, isComplete);
+    }
+
+    renderTasks() {
+        const { tasks } = this.props;
+        const data = tasks.reduce((data, task) => {
+            const originalDate = task.date.toDate();
+            const momentDate = moment(originalDate).format('l');
+            if (!data[momentDate]) {
+                data[momentDate] = [];
+            }
+            data[momentDate].push(task);
+            return data;
+        }, {});
+        const dataArray = Object.keys(data).map((date) => {
+            return {
+                date,
+                tasks: data[date]
+            }
+        });
+        return dataArray;
     }
 
     render() {
         const { tasks } = this.props;
-        // if (!auth.uid) {
-        //     console.log('dashboard redirect');
-        //     return <Redirect to="/" />;
-        // }
         console.log(tasks);
         if (!tasks) {
             return (
@@ -38,17 +64,22 @@ class Dashboard extends React.Component {
                 </div>
             );
         } else {
-            return <TaskList tasks={tasks} />
+            const newTasks = this.renderTasks();
+            return (
+                <>
+                    <TaskList onTaskComplete={this.onTaskComplete} onTaskDelete={this.onTaskDelete} tasks={newTasks} />
+                    <div style={{ height: "20px"}}></div>
+                </>
+            );
         }
     };
 }
 
 const mapStateToProps = (state) => {
-    console.log(state);
     return {
         tasks: state.hw.tasks,
-        auth: state.firebase.auth
+        uid: state.auth.uid
     }
 }
 
-export default connect(mapStateToProps, { fetchTasks })(Dashboard);
+export default connect(mapStateToProps, { fetchTasks, deleteTask, completeTask })(Dashboard);

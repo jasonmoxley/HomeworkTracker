@@ -7,8 +7,8 @@ import { logOut } from '../actions';
 class Header extends React.Component{
 
     renderHeader() {
-        const { auth } = this.props;
-        const isSignedIn = auth.uid ? true : false;
+        const { uid } = this.props;
+        const isSignedIn = uid ? true : false;
         if (isSignedIn) {
             return (
                 <div className="ui container">
@@ -50,7 +50,7 @@ class Header extends React.Component{
 }
 
 const mapStateToProps = state => {
-    return { auth: state.firebase.auth };
+    return { uid: state.auth.uid };
 }
 
 export default connect(mapStateToProps, { logOut })(Header);

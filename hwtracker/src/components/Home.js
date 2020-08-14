@@ -1,14 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import history from '../history';
 
 class Home extends React.Component {
-    render() {
-        const { auth } = this.props;
-        if (auth.uid) {
-            console.log('home redirect');
-            return <Redirect to="/Dashboard" />;
+
+    componentDidMount() {
+        const { uid } = this.props;
+        if (uid) {
+            console.log('home redirect to dashboard');
+            history.push('/Dashboard');
         }
+    }
+
+    render() {
         return (
             <div>home</div>
         );
@@ -16,7 +20,7 @@ class Home extends React.Component {
 }
 
 const mapStateToProps = state => {
-    return { auth: state.firebase.auth }
+    return { uid: state.auth.uid }
 }
 
 export default connect(mapStateToProps)(Home);
