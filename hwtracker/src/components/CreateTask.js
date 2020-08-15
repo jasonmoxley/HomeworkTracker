@@ -8,6 +8,7 @@ class CreateTask extends React.Component {
 
     componentDidMount() {
         const { uid } = this.props;
+        console.log(uid);
         if (!uid) {
             console.log('createtask redirecting to home');
             history.push('/');
@@ -29,7 +30,7 @@ class CreateTask extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    return { auth: state.auth.uid }; 
+    return { uid: state.auth.uid }; 
 }
 
 export default connect(mapStateToProps, { createTask })(CreateTask);

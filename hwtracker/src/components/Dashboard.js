@@ -8,6 +8,11 @@ import moment from 'moment';
 
 class Dashboard extends React.Component {
 
+    constructor() {
+        super();
+        this.state = {};
+    }
+
     componentDidMount() {
         const { uid } = this.props;
         if (!uid) {
@@ -23,6 +28,8 @@ class Dashboard extends React.Component {
         const { uid } = this.props;
         this.props.deleteTask(id, uid);
         // this.props.fetchTasks(uid);
+        console.log('setting state');
+        this.setState({});
     }
 
     onTaskComplete = (id, isComplete) => {
@@ -30,6 +37,8 @@ class Dashboard extends React.Component {
         console.log(id);
         const { uid } = this.props;
         this.props.completeTask(id, uid, isComplete);
+        console.log('setting state');
+        this.setState({});
     }
 
     renderTasks() {

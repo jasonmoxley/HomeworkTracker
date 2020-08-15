@@ -23,7 +23,7 @@ export default (state = {}, action) => {
                     return newState2;
                 }
             }
-            return state;
+            return newState2;
         case DELETE_TASK_ERROR:
             console.log('deleted task error', action.payload);
             return state;
@@ -36,7 +36,7 @@ export default (state = {}, action) => {
                     return newState;
                 }
             }
-            return state;
+            return newState;
         case COMPLETE_TASK_ERROR:
             console.log('completed task error', action.payload);
             return state;

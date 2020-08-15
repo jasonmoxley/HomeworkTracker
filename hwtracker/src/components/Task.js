@@ -4,7 +4,6 @@ import TaskCheckbox from './TaskCheckbox';
 
 const Task = ({ tasks, onTaskDelete, onTaskComplete }) => {
     return tasks.map((task, index) => {
-        console.log(index);
         if (index === 0) {
             return (
                 <div className="item" style={{ marginLeft: "30px" }} key={task.id}>
@@ -17,7 +16,7 @@ const Task = ({ tasks, onTaskDelete, onTaskComplete }) => {
                                 <i className="alternate trash icon"></i>
                             </div>
                             <div className="ui floated toggle checkbox">
-                                <TaskCheckbox onTaskComplete={onTaskComplete} isCompleted={task.completed} id={task.id}/>
+                                <input type="checkbox" name="public" checked={task.completed} onChange={() => onTaskComplete(task.id, !task.completed)}/>
                                 <label>Completed</label>
                             </div>
                         </div>
