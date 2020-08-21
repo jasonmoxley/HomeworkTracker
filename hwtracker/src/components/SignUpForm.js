@@ -35,7 +35,8 @@ class SignUpForm extends React.Component {
         return (
             <form onSubmit={this.props.handleSubmit} className="ui form error">
                 <Field name="email" component={this.renderInput} type="text" label="Email" />
-                <Field name="password" component={this.renderInput} type="text" label="Password" />
+                <Field name="password" component={this.renderInput} type="password" label="Password" />
+                <Field name="password2" component={this.renderInput} type="password" label="Confirm Password" />
                 <Field name="first" component={this.renderInput} type="text" label="First" />
                 <Field name="last" component={this.renderInput} type="text" label="Last" />
                 <div className="ui error message">{this.props.authError ? this.props.authError : ''}</div>
@@ -54,11 +55,17 @@ const validate = (formValues) => {
     if (!formValues.password) {
         errors.password = 'please enter a password';
     }
+    if (!formValues.password2) {
+        errors.password2 = 'please confirm your password';
+    }
     if (!formValues.first) {
         errors.first = 'please enter a first name';
     }
     if (!formValues.last) {
         errors.last = 'please enter a last name';
+    }
+    if (formValues.password !== formValues.password2) {
+        errors.password2 = 'Your passwords do not match';
     }
     return errors;
 }

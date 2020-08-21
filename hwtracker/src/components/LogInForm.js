@@ -32,7 +32,7 @@ class LogInForm extends React.Component {
         return (
             <form onSubmit={this.props.handleSubmit} className="ui form error">
                 <Field name="email" component={this.renderInput} type="text" label="Email" />
-                <Field name="password" component={this.renderInput} type="text" label="Password" />
+                <Field name="password" component={this.renderInput} type="password" label="Password" />
                 <div className="ui error message">{this.props.authError ? this.props.authError : ''}</div>
                 <Link to="/" className="ui button">Cancel</Link>
                 <button type="submit" className="ui button">Submit</button>
